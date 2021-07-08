@@ -4,6 +4,8 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+
+# see video: https://www.youtube.com/watch?v=ey7DYc9OANo
 class Solution(object):
     def height(self, treenode ):
         if treenode == None:
