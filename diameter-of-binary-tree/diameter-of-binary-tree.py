@@ -16,22 +16,15 @@ class Solution(object):
             h = 1 + left
         else:
             h = 1 + right
+        self.diam = max(self.diam, left+right)    
         return h
     def diameterOfBinaryTree(self, root):
         """
         :type root: TreeNode
         :rtype: int
         """
-        if root == None:
-            return 0
-        lh = self.height(root.left)
-        #print(lh)
-        rh = self.height(root.right)
-        #print(rh)
-        ld = self.diameterOfBinaryTree(root.left)
-        rd = self.diameterOfBinaryTree(root.right)
-        print(ld)
-        d = max(lh+rh, max(ld,rd))
+        self.diam =0
+        hh = self.height(root)
         
-        return d
+        return self.diam
         
