@@ -45,7 +45,7 @@ class Solution(object):
             if target< nums[0]:
                 idx = self.binsearch(nums[pvt_index+1:],target)
                 if idx >=0:
-                    return pvt_index + 1+self.binsearch(nums[pvt_index+1:],target)
+                    return pvt_index +1+ idx
                 else:
                     return -1
             else:
