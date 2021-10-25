@@ -1,40 +1,48 @@
-class Solution:
+# Followed the approach of Coreman's DFS: Chapter 22
+from collections import defaultdict
+class Solution(object):
+    def build_graph(self, n, edges,adjacency_list):
+        for e in edges:
+            adjacency_list[e[0]].append(e[1])
+        #self.color = ['WHITE'] *n
+        return adjacency_list
     
-    # We don't use the state WHITE as such anywhere. Instead, the "null" value in the states array below is a substitute for WHITE.
-    GRAY = 1
-    BLACK = 2
-
-    def leadsToDestination(self, n: int, edges: List[List[int]], source: int, destination: int) -> bool:
-        graph = self.buildDigraph(n, edges)
-        return self.leadsToDest(graph, source, destination, [None] * n)
-        
-    def leadsToDest(self, graph, node, dest, states):
-        
-        # If the state is GRAY, this is a backward edge and hence, it creates a Loop.
-        if states[node] != None:
-            return states[node] == Solution.BLACK
-        
-        # If this is a leaf node, it should be equal to the destination.
-        if len(graph[node]) == 0:
-            return node == dest
-        
-        # Now, we are processing this node. So we mark it as GRAY.
-        states[node] = Solution.GRAY
-        
-        for next_node in graph[node]:
+    def dfs(self, n, edges, node, destination, adjacency_list,color):
+        print(node)
+        if color[node] != None:
+            return color[node] == 'BLACK'
+        if len(adjacency_list[node])==0:
+            return node == destination
+        color[node] = 'GREY'
+        for neighbour in adjacency_list[node]:
+            if not self.dfs(n, edges, neighbour, destination, adjacency_list,color):
+                return False
             
-            # If we get a `false` from any recursive call on the neighbors, we short circuit and return from there.
-            if not self.leadsToDest(graph, next_node, dest, states):
-                return False;
-        
-        # Recursive processing done for the node. We mark it BLACK.
-        states[node] = Solution.BLACK
+        color[node] = 'BLACK'
         return True
-        
-    def buildDigraph(self, n, edges):
-        graph = [[] for _ in range(n)]
-        
-        for edge in edges:
-            graph[edge[0]].append(edge[1])
+    def leadsToDestination(self, n, edges, source, destination):
+        """
+        :type n: int
+        :type edges: List[List[int]]
+        :type source: int
+        :type destination: int
+        :rtype: bool
+        """
+        adjacency_list = defaultdict()
+        for i in range(0,n):
+            adjacency_list[i] = []
             
-        return graph   
+        adjacency_list = self.build_graph(n, edges, adjacency_list)
+        color = [None]*n
+        count = 0
+        '''
+        
+        for (key, value) in adjacency_list.iteritems():
+            if len(value)==0:
+                count +=1
+        if count>1:
+            return False
+            
+        '''
+        return self.dfs(n, edges, source, destination, adjacency_list,color)
+        
